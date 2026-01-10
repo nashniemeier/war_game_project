@@ -31,39 +31,39 @@ class GameState:
             self.player_b.collect_cards(winning_cards_list)
 
         if result == 0: # War
-            self.war()
+            self.war(winning_cards_list)
 
-    def war(self):
+    def war(self, cards_list):
         self.num_wars += 1
 
 
         # Can either player run the game?
         if not self.player_a.war_valid():
             print("Player B Wins!")
+            self.player_b.move_all_cards(self.player_a)
             return
-        if self.player_b.war_valid():
+        if not self.player_b.war_valid():
             print("Player A Wins!")
+            self.player_a.move_all_cards(self.player_b)
             return
-
-        war_cards = []
 
         for i in range(2):
-            war_cards.append(self.player_a.give_next_card())
-            war_cards.append(self.player_b.give_next_card())
+            cards_list.append(self.player_a.give_next_card())
+            cards_list.append(self.player_b.give_next_card())
 
         player_a_card = self.player_a.give_next_card()
         player_b_card = self.player_b.give_next_card()
 
-        war_cards.append(player_a_card)
-        war_cards.append(player_b_card)
+        cards_list.append(player_a_card)
+        cards_list.append(player_b_card)
 
         result = player_a_card.compare(player_b_card)
         if result == 1:
-            self.player_a.collect_cards(war_cards)
+            self.player_a.collect_cards(cards_list)
         if result == -1:
-            self.player_b.collect_cards(war_cards)
+            self.player_b.collect_cards(cards_list)
         if result == 0:
-            return self.war()
+            return self.war(cards_list)
 
 
 

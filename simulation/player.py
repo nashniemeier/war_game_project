@@ -36,6 +36,18 @@ class Player:
         else:
             return True
 
+    def move_all_cards(self, opponent):
+        # Move all cards from opponent to self
+        move_pile = []
+        while opponent.winning_deck.deck:
+            move_pile.append(opponent.winning_deck.deck.pop())
+
+        while opponent.playing_deck.deck:
+            move_pile.append(opponent.playing_deck.deck.pop())
+
+        while move_pile:
+            self.winning_deck.deck.append(move_pile.pop())
+
 
 
 
