@@ -35,7 +35,7 @@ class GameState:
 
     def war(self, cards_list):
         self.num_wars += 1
-
+        self.num_rounds += 1
 
         # Can either player run the game?
         if not self.player_a.war_valid():
