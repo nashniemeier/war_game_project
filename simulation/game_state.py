@@ -7,6 +7,7 @@ class GameState:
         self.player_b = Player(2)
         self.num_rounds = 0
         self.num_wars = 0
+        self.game_over = False
 
 
     def play_round(self):
@@ -16,9 +17,11 @@ class GameState:
 
         if player_a_card == "Loser":
             print("Player B Wins!")
+            self.game_over = True
             return
         if player_b_card == "Loser":
             print("Player A Wins! Big time")
+            self.game_over = True
             return
 
         winning_cards_list = [player_a_card, player_b_card]
@@ -40,10 +43,12 @@ class GameState:
         # Can either player run the game?
         if not self.player_a.war_valid():
             print("Player B Wins!")
+            self.game_over = True
             self.player_b.move_all_cards(self.player_a)
             return
         if not self.player_b.war_valid():
             print("Player A Wins!")
+            self.game_over = True
             self.player_a.move_all_cards(self.player_b)
             return
 
