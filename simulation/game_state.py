@@ -18,7 +18,7 @@ class GameState:
             print("Player B Wins!")
             return
         if player_b_card == "Loser":
-            print("Player A Wins!")
+            print("Player A Wins! Big time")
             return
 
         winning_cards_list = [player_a_card, player_b_card]
