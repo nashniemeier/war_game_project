@@ -25,7 +25,8 @@ cursor.execute("""
         avg_rank REAL,
         std_rank REAL,
         num_high_cards INTEGER,
-        num_low_cards INTEGER
+        num_low_cards INTEGER,
+        num_aces INTEGER
     )
                """)
 
@@ -42,6 +43,9 @@ def main():
         player_b_weak_cards = 0
         player_a_strong_cards = 0
         player_a_weak_cards = 0
+
+        player_a_aces = 0
+        player_b_aces = 0
         hit_round_cap = 0
 
 
@@ -63,6 +67,7 @@ def main():
             player_a_ranks.append(card.rank)
             if card.rank > 9:
                 player_a_strong_cards += 1
+                if card.rank == 13: player_a_aces += 1
             elif card.rank < 4:
                 player_a_weak_cards += 1
         avg_rank_a = statistics.mean(player_a_ranks)
@@ -73,6 +78,7 @@ def main():
             player_b_ranks += card.rank
             if card.rank > 9:
                 player_b_strong_cards += 1
+                if card.rank == 13: player_b_aces += 1
             elif card.rank < 4:
                 player_b_weak_cards += 1
         avg_rank_b = statistics.mean(player_b_ranks)
@@ -94,6 +100,16 @@ def main():
                        """, (our_game.winner, our_game.num_rounds, our_game.num_wars, hit_round_cap))
 
         game_id = cursor.lastrowid
+
+        cursor.execute("""
+        INSERT INTO initial_conditions (game_id, player, avg_rank, std_rank, num_high_cards, num_low_cards, num_aces) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (game_id, "A", avg_rank_a, std_rank_a, player_a_strong_cards, player_a_weak_cards, player_a_aces))
+
+        cursor.execute("""
+        INSERT INTO initial_conditions (game_id, player, avg_rank, std_rank, num_high_cards, num_low_cards, num_aces)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (game_id, "B", avg_rank_b, std_rank_b, player_b_strong_cards, player_b_weak_cards, player_b_aces))
 
 
 
