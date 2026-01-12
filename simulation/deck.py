@@ -20,7 +20,7 @@ class Deck:
         return self.deck[-1]
 
     def remove_top_card(self):
-        return self.deck.remove(self.get_top_card())
+        return self.deck.pop()
 
     def add_card(self, card):
         self.deck.append(card)
